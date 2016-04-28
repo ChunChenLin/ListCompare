@@ -65,6 +65,8 @@ Sub filter()
             s2 = Replace(s2, "-", "")
             s1 = Replace(s1, ".", "")
             s2 = Replace(s2, ".", "")
+            s1 = Replace(s1, "_", "")
+            s2 = Replace(s2, "_", "")
             If s1 = s2 And _
             Worksheets("teacher").Cells(j, 4) = Worksheets("scopus").Cells(i, 3) Then
                 numOfSame = numOfSame + 1
@@ -151,36 +153,86 @@ Sub filter()
  
     '新增工作表並更名
     Sheets.Add After:=Sheets(Sheets.Count)
-    Sheets(Sheets.Count).Name = "typeA"
+    Sheets(Sheets.Count).Name = "Green"
     Sheets.Add After:=Sheets(Sheets.Count)
-    Sheets(Sheets.Count).Name = "typeB"
+    Sheets(Sheets.Count).Name = "Red"
+    Sheets.Add After:=Sheets(Sheets.Count)
+    Sheets(Sheets.Count).Name = "Purple&Green"
     
-    Worksheets("typeA").Cells(1, 1).Value = "Authors"
-    Worksheets("typeA").Cells(1, 2).Value = "Title"
-    Worksheets("typeA").Cells(1, 3).Value = "Pub Year"
-    Worksheets("typeA").Cells(1, 4).Value = "Type"
-    Worksheets("typeB").Cells(1, 1).Value = "Authors"
-    Worksheets("typeB").Cells(1, 2).Value = "Title"
-    Worksheets("typeB").Cells(1, 3).Value = "Pub Year"
-    Worksheets("typeB").Cells(1, 4).Value = "Type"
+    Worksheets("Green").Cells(1, 1).Value = "Authors"
+    Worksheets("Green").Cells(1, 2).Value = "Title"
+    Worksheets("Green").Cells(1, 3).Value = "Pub Year"
+    Worksheets("Green").Cells(1, 4).Value = "Type"
+    Worksheets("Red").Cells(1, 1).Value = "Authors"
+    Worksheets("Red").Cells(1, 2).Value = "Title"
+    Worksheets("Red").Cells(1, 3).Value = "Pub Year"
+    Worksheets("Red").Cells(1, 4).Value = "Type"
+    Worksheets("Purple&Green").Cells(1, 1).Value = "Authors"
+    Worksheets("Purple&Green").Cells(1, 2).Value = "Title"
+    Worksheets("Purple&Green").Cells(1, 3).Value = "Pub Year"
+    Worksheets("Purple&Green").Cells(1, 4).Value = "Type"
     
     numOfNotSame = range_B - numOfSame
     For i=2 To numOfNotSame+2
-        Worksheets("typeA").Cells(i, 1).Value = Worksheets("scopus").Cells(i, 1).Value
-        Worksheets("typeA").Cells(i, 2).Value = Worksheets("scopus").Cells(i, 2).Value
-        Worksheets("typeA").Cells(i, 3).Value = Worksheets("scopus").Cells(i, 3).Value
-        Worksheets("typeA").Cells(i, 4).Value = Worksheets("scopus").Cells(i, 39).Value
+        Worksheets("Green").Cells(i, 1).Value = Worksheets("scopus").Cells(i, 1).Value
+        Worksheets("Green").Cells(i, 2).Value = Worksheets("scopus").Cells(i, 2).Value
+        Worksheets("Green").Cells(i, 3).Value = Worksheets("scopus").Cells(i, 3).Value
+        Worksheets("Green").Cells(i, 4).Value = Worksheets("scopus").Cells(i, 39).Value
+
+        Worksheets("Purple&Green").Cells(i, 1).Value = Worksheets("scopus").Cells(i, 1).Value
+        Worksheets("Purple&Green").Cells(i, 2).Value = Worksheets("scopus").Cells(i, 2).Value
+        Worksheets("Purple&Green").Cells(i, 3).Value = Worksheets("scopus").Cells(i, 3).Value
+        Worksheets("Purple&Green").Cells(i, 4).Value = Worksheets("scopus").Cells(i, 39).Value
+    Next
+
+    For i = 2 To numOfNotSame+2 'Green設為綠色
+        'Set c = Worksheets("scopus").Cells(i, 2)
+         Set c = Worksheets("Green").Range("A" & i & ":D" & numOfNotSame+2 & "")
+            With c.Font
+                .Color = -11489280
+            End With
+        Set d = Worksheets("Purple&Green").Range("A" & i & ":D" & numOfNotSame+2 & "")
+            With d.Font
+                .Color = -11489280
+            End With
     Next
     
     j = 2
     For i=numOfNotSame+3 To range_B
-        Worksheets("typeB").Cells(j, 1).Value = Worksheets("scopus").Cells(i, 1).Value
-        Worksheets("typeB").Cells(j, 2).Value = Worksheets("scopus").Cells(i, 2).Value
-        Worksheets("typeB").Cells(j, 3).Value = Worksheets("scopus").Cells(i, 3).Value
-        Worksheets("typeB").Cells(j, 4).Value = Worksheets("scopus").Cells(i, 39).Value
+        Worksheets("Red").Cells(j, 1).Value = Worksheets("scopus").Cells(i, 1).Value
+        Worksheets("Red").Cells(j, 2).Value = Worksheets("scopus").Cells(i, 2).Value
+        Worksheets("Red").Cells(j, 3).Value = Worksheets("scopus").Cells(i, 3).Value
+        Worksheets("Red").Cells(j, 4).Value = Worksheets("scopus").Cells(i, 39).Value
         
         j = j + 1
     Next
+
+    For i = 2 To numOfSame+2 'Red設為紅色
+        'Set c = Worksheets("scopus").Cells(i, 2)
+         Set c = Worksheets("Red").Range("A" & i & ":D" & numOfNotSame+2 & "")
+            With c.Font
+                .Color = -16776961
+            End With
+    Next
+
+    j = numOfNotSame+3
+    For i=numOfSame+1 To range_A
+        Worksheets("Purple&Green").Cells(j, 1).Value = Worksheets("teacher").Cells(i, 2).Value
+        Worksheets("Purple&Green").Cells(j, 2).Value = Worksheets("teacher").Cells(i, 3).Value
+        Worksheets("Purple&Green").Cells(j, 3).Value = Worksheets("teacher").Cells(i, 4).Value
+        Worksheets("Purple&Green").Cells(j, 4).Value = Worksheets("teacher").Cells(i, 5).Value
+        
+        j = j + 1
+    Next
+
+    For i = numOfNotSame+3 To numOfNotSame+3+range_A-numOfSame '紫色
+        'Set c = Worksheets("scopus").Cells(i, 2)
+        Set d = Worksheets("Purple&Green").Range("A" & i & ":D" & numOfNotSame+2 & "")
+            With d.Font
+                .Color = -6279056
+            End With
+    Next
+
     
     MsgBox ("紅色表示scopus有建檔" & vbCrLf & "綠色表示scopus有檔案 老師著作清單沒有列入" & vbCrLf & "紫色表示scopus沒有建檔")
     
